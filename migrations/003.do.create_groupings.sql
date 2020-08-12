@@ -3,6 +3,6 @@ CREATE TABLE groupings (
   grouping_name TEXT NOT NULL,
   groupings JSONB NOT NULL,
   date_created TIMESTAMP DEFAULT now() NOT NULL,
-  teacher_id REFERENCES teachers(id),
-  class_id REFERENCES classes(id)
+  teacher_id INTEGER REFERENCES teachers(id),
+  class_id INTEGER REFERENCES classes(id)
 );
