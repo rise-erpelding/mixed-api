@@ -4,7 +4,7 @@ const ClassesService = {
       .from('classes')
       .select('*')
   },
-  getClassById(knex, classId) {
+  getClassById(knex, id) {
     return knex
       .from('classes')
       .select('*')
