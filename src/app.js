@@ -7,6 +7,7 @@ const { NODE_ENV } = require('./config');
 
 const teachersRouter = require('./teachers/teachers-router');
 const classesRouter = require('./classes/classes-router');
+const groupingsRouter = require('./groupings/groupings-router');
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use(cors());
 
 app.use('/api/teachers', teachersRouter);
 app.use('/api/classes', classesRouter);
+app.use('/api/groupings', groupingsRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello, MixEd API!');
