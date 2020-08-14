@@ -50,16 +50,16 @@ classesRouter
       req.app.get('db'),
       req.params.teacher_id
     )
-      .then(teacher => { // review this
+      .then(teacher => {
         if (!teacher) {
           return res.status(404).json({
             error: { message: 'Teacher does not exist' }
           })
         }
-        res.teacher = teacher
-        next()
+        res.teacher = teacher;
+        next();
       })
-      .catch(next)
+      .catch(next);
   })
   .get((req, res, next) => {
     ClassesService.getClassByTeacherId(
@@ -67,7 +67,14 @@ classesRouter
       req.params.teacher_id
     )
     .then(classes => {
-      res.json(classes.map(serializeClassName));
+      if (!classes.length) {
+        return res.status(404).json({
+          error: { message: 'No classes found for specified teacher' }
+        });
+      }
+      else {
+        res.json(classes.map(serializeClassName));
+      }
     })
     .catch(next);
   });
@@ -80,12 +87,12 @@ classesRouter
         req.params.id
       )
       .then(classRes => {
-        if (!classRes) {
+        if (!classRes.length) {
           return res
             .status(404)
             .json({
               error: { message: `Class does not exist` }
-            })
+            });
         }
         res.classRes = classRes;
         next()
@@ -104,6 +111,28 @@ classesRouter
         res.status(204).end()
       })
       .catch(next)
+    })
+    .patch(jsonParser, (req, res, next) => {
+      const { class_name } = req.body;
+      const classToUpdate = { class_name };
+      if (!class_name) {
+        return res
+          .status(400)
+          .json({
+            error: { message: `Request body must contain 'class_name'` }
+          })
+      }
+      ClassesService.updateClassName(
+        req.app.get('db'),
+        req.params.id,
+        classToUpdate
+      )
+        .then(numRowsAffected => {
+          res
+            .status(204)
+            .end()
+        })
+        .catch(next)
     });
 
 
