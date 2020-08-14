@@ -14,4 +14,14 @@ teachersRouter
       .catch(next);
   });
 
+// teachersRouter
+//   .route('/:id')
+//   .all((req, res, next) => {
+//     TeachersService.getTeacherById(
+//       req.app.get('db'),
+//       // req.params.id
+
+//     )
+//   })
+
   module.exports = teachersRouter;

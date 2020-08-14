@@ -4,14 +4,26 @@ const ClassesService = {
       .from('classes')
       .select('*')
   },
-  getClassById(knex, id) {
+  getTeacherById(knex, teacherId) {
+    return knex
+      .from('teachers')
+      .select('teachers.id')
+      .where('id', teacherId)
+      .first()
+  },
+  getClassByTeacherId(knex, teacherId) {
+    return knex
+      .from('classes')
+      .select('*')
+      .where('teacher_id', teacherId)
+  },
+  getClassByClassId(knex, id) {
     return knex
       .from('classes')
       .select('*')
       .where('id', id)
-      .first();
   },
-  addClass(knex, newClass) {
+  insertClass(knex, newClass) {
     return knex
       .insert(newClass)
       .into('classes')
@@ -20,7 +32,7 @@ const ClassesService = {
         return rows[0];
       });
   },
-  removeClass(knex, id) {
+  deleteClass(knex, id) {
     return knex
       .from('classes')
       .where('id', id)
