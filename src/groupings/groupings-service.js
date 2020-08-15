@@ -11,6 +11,19 @@ const GroupingsService = {
       .where('id', id)
       .first();
   },
+  getTeacherById(knex, teacherId) {
+    return knex
+      .from('teachers')
+      .select('teachers.id')
+      .where('id', teacherId)
+      .first()
+  },
+  getGroupingByTeacherId(knex, teacherId) {
+    return knex
+      .from('groupings')
+      .select('*')
+      .where('teacher_id', teacherId)
+  },
   addGrouping(knex, newGrouping) {
     return knex
       .insert(newGrouping)
@@ -26,11 +39,11 @@ const GroupingsService = {
       .where('id', id)
       .delete();
   },
-  updateGroupingName(knex, id, updatedName) {
+  updateGrouping(knex, id, updatedGrouping) {
     return knex
       .from('groupings')
       .where('id', id)
-      .update(updatedName);
+      .update(updatedGrouping);
   }
 }
 
