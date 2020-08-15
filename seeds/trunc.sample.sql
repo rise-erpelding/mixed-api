@@ -1,6 +1,5 @@
 TRUNCATE
   teachers,
   classes,
-  groupings,
-  generator_data
+  groupings
 RESTART IDENTITY CASCADE;
