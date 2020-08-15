@@ -24,9 +24,15 @@ describe('Classes Endpoints', function () {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => db.raw(`TRUNCATE teachers RESTART IDENTITY CASCADE`));
+  before('cleanup', () => db.raw(`TRUNCATE
+  teachers,
+  classes
+RESTART IDENTITY CASCADE`));
 
-  afterEach('cleanup', () => db.raw(`TRUNCATE teachers RESTART IDENTITY CASCADE`));
+  afterEach('cleanup', () => db.raw(`TRUNCATE
+  teachers,
+  classes
+RESTART IDENTITY CASCADE`));
 
   describe(`GET /api/classes`, () => {
     context(`Given no classes in the database`, () => {

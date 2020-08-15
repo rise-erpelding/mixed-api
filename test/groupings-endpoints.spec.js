@@ -3,9 +3,8 @@ const app = require('../src/app');
 const helpers = require('./test-helpers');
 const supertest = require('supertest');
 const { expect } = require('chai');
-const { expectCt } = require('helmet');
 
-describe.only('Groupings Endpoints', function () {
+describe.skip('Groupings Endpoints', function () {
   let db;
 
   const { testTeachers, testClasses, testGroupings } = helpers.makeFixtures();
@@ -25,9 +24,17 @@ describe.only('Groupings Endpoints', function () {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => db.raw(`TRUNCATE teachers RESTART IDENTITY CASCADE`));
+  before('cleanup', () => db.raw(`TRUNCATE
+  teachers,
+  classes,
+  groupings
+RESTART IDENTITY CASCADE`));
 
-  afterEach('cleanup', () => db.raw(`TRUNCATE teachers RESTART IDENTITY CASCADE`));
+  afterEach('cleanup', () => db.raw(`TRUNCATE
+  teachers,
+  classes,
+  groupings
+RESTART IDENTITY CASCADE`));
 
   describe(`GET /api/groupings`, () => {
     context(`Given no classes in the database`, () => {
@@ -184,7 +191,7 @@ describe.only('Groupings Endpoints', function () {
       });
     });
 
-    context.only(`Given there are groupings in the database`, () => {
+    context(`Given there are groupings in the database`, () => {
       beforeEach('insert classes, teachers, groupings', () => {
         return db
           .into('teachers')
