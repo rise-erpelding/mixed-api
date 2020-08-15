@@ -4,7 +4,7 @@ const helpers = require('./test-helpers');
 const supertest = require('supertest');
 const { expect } = require('chai');
 
-describe.skip('Groupings Endpoints', function () {
+describe('Groupings Endpoints', function () {
   let db;
 
   const { testTeachers, testClasses, testGroupings } = helpers.makeFixtures();
@@ -70,7 +70,7 @@ RESTART IDENTITY CASCADE`));
     })
   });
 
-  describe(`POST /api/groupings`, () => {
+  describe.only(`POST /api/groupings`, () => {
     context(`Given there are teachers and classes in the database`, () => {
 
       beforeEach('insert classes and teachers', () => {

@@ -15,8 +15,10 @@ groupingsRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { grouping_name, groupings, teacher_id, class_id } = req.body;
-    const newGrouping = { grouping_name, groupings, teacher_id, class_id };
+    const { grouping_name, groupings, data, teacher_id, class_id } = req.body;
+    // const newGrouping = { grouping_name, groupings, data, teacher_id, class_id };
+    const newGrouping = { grouping_name, data, teacher_id, class_id };
+    newGrouping.groupings = JSON.stringify(groupings);
     for (const [key, value] of Object.entries(newGrouping))
       if (value === null) {
         return res
