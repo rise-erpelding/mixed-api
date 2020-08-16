@@ -70,7 +70,7 @@ RESTART IDENTITY CASCADE`));
     })
   });
 
-  describe.only(`POST /api/groupings`, () => {
+  describe(`POST /api/groupings`, () => {
     context(`Given there are teachers and classes in the database`, () => {
 
       beforeEach('insert classes and teachers', () => {
@@ -210,48 +210,50 @@ RESTART IDENTITY CASCADE`));
 
       it(`responds with 204 and removes the grouping`, () => {
         return supertest(app)
-          .delete(`/api/grouping/1`)
+          .delete(`/api/groupings/1`)
           .expect(204)
           .then(res =>
             supertest(app)
-              .get(`/api/classes/1`)
+              .get(`/api/groupings/1`)
               .expect(404, { error: { message: `Grouping does not exist` } })
           )
       });
     });
   });
 
-  // describe(`PATCH /api/classes/:id`, () => {
-  //   context(`Given there are classes in the database`, () => {
-  //     beforeEach('insert classes and teachers', () => {
-  //       return db
-  //         .into('teachers')
-  //         .insert(testTeachers)
-  //         .then(() => {
-  //           return db
-  //             .into('classes')
-  //             .insert(testClasses)
-  //         });
-  //     });
-  //     it(`responds with 204 and updates the class name`, () => {
-  //       const newClassName = {
-  //         class_name: "Changed Class Name"
-  //       }
-  //       return supertest(app)
-  //         .patch(`/api/classes/3`)
-  //         .send(newClassName)
-  //         .expect(204)
-  //         .then(res =>
-  //           supertest(app)
-  //             .get(`/api/classes/3`)
-  //             .expect(res => {
-  //               // show that the class name has changed
-  //               expect(res.body[0].class_name).to.eql(newClassName.class_name)
-  //               // show that the teacher id has not changed
-  //               expect(res.body[0].teacher_id).to.eql(testClasses[2].teacher_id)
-  //             })
-  //         )
-  //     });
-  //   });
-  // });
+  describe(`PATCH /api/groupings/:id`, () => {
+    context(`Given there are teachers, classes, groupings in the database`, () => {
+      beforeEach('insert classes, teachers, groupings', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+          .then(() => {
+            return db
+              .into('classes')
+              .insert(testClasses)
+              .then(() => {
+                return db
+                .into('groupings')
+                .insert(testGroupings)
+              })
+          });
+      });
+      it(`responds with 204 and updates the grouping`, () => {
+        const groupingToPatch = helpers.makeGroupingToPatch();
+        return supertest(app)
+          .patch(`/api/groupings/1`)
+          .send(groupingToPatch)
+          .expect(204)
+          .then(res =>
+            supertest(app)
+              .get(`/api/groupings/1`)
+              .expect(res => {
+                expect(res.body.grouping_name).to.eql(groupingToPatch.grouping_name)
+                expect(res.body.groupings).to.eql(groupingToPatch.groupings)
+                expect(res.body.data).to.eql(groupingToPatch.data)
+              })
+          )
+      });
+    });
+  });
 });

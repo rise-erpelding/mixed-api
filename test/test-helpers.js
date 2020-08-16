@@ -165,6 +165,23 @@ function makeGroupingToAdd() {
   }
 }
 
+function makeGroupingToPatch() {
+  return {
+    grouping_name: 'Patched Writing Groups',
+    groupings: [{ "alias": "Zabini", "Hogwarts House": "Slytherin", "Assessment Grade": 81, "Assessment Grade Level": 2, "groupNum": 2 }, { "alias": "Cho", "Hogwarts House": "Ravenclaw", "Assessment Grade": 89, "Assessment Grade Level": 3, "groupNum": 2 }, { "alias": "Colin", "Hogwarts House": "Gryffindor", "Assessment Grade": 79, "Assessment Grade Level": 2, "groupNum": 3 }, { "alias": "Cormac", "Hogwarts House": "Gryffindor", "Assessment Grade": 81, "Assessment Grade Level": 2, "groupNum": 4 }, { "alias": "Crabbe", "Hogwarts House": "Slytherin", "Assessment Grade": 52, "Assessment Grade Level": 1, "groupNum": 3 }, { "alias": "Dean", "Hogwarts House": "Gryffindor", "Assessment Grade": 75, "Assessment Grade Level": 1, "groupNum": 2 }, { "alias": "Draco", "Hogwarts House": "Slytherin", "Assessment Grade": 82, "Assessment Grade Level": 2, "groupNum": 5 }, { "alias": "Ernie", "Hogwarts House": "Hufflepuff", "Assessment Grade": 83, "Assessment Grade Level": 2, "groupNum": 6 }, { "alias": "Ginny", "Hogwarts House": "Gryffindor", "Assessment Grade": 81, "Assessment Grade Level": 2, "groupNum": 7 }, { "alias": "Goyle", "Hogwarts House": "Slytherin", "Assessment Grade": 55, "Assessment Grade Level": 1, "groupNum": 4 }, { "alias": "Hannah", "Hogwarts House": "Hufflepuff", "Assessment Grade": 65, "Assessment Grade Level": 1, "groupNum": 5 }, { "alias": "Harry", "Hogwarts House": "Gryffindor", "Assessment Grade": 78, "Assessment Grade Level": 2, "groupNum": 8 }, { "alias": "Hermione", "Hogwarts House": "Gryffindor", "Assessment Grade": 100, "Assessment Grade Level": 3, "groupNum": 5 }, { "alias": "Justin", "Hogwarts House": "Hufflepuff", "Assessment Grade": 77, "Assessment Grade Level": 2, "groupNum": 8 }, { "alias": "Katie", "Hogwarts House": "Gryffindor", "Assessment Grade": 75, "Assessment Grade Level": 1, "groupNum": 6 }, { "alias": "Lavender", "Hogwarts House": "Gryffindor", "Assessment Grade": 84, "Assessment Grade Level": 3, "groupNum": 1 }, { "alias": "Luna", "Hogwarts House": "Ravenclaw", "Assessment Grade": 92, "Assessment Grade Level": 3, "groupNum": 3 }, { "alias": "Michael", "Hogwarts House": "Ravenclaw", "Assessment Grade": 68, "Assessment Grade Level": 1, "groupNum": 7 }, { "alias": "Neville", "Hogwarts House": "Gryffindor", "Assessment Grade": 65, "Assessment Grade Level": 1, "groupNum": 1 }, { "alias": "Pansy", "Hogwarts House": "Slytherin", "Assessment Grade": 84, "Assessment Grade Level": 3, "groupNum": 6 }, { "alias": "Padma", "Hogwarts House": "Ravenclaw", "Assessment Grade": 88, "Assessment Grade Level": 3, "groupNum": 4 }, { "alias": "Parvati", "Hogwarts House": "Gryffindor", "Assessment Grade": 90, "Assessment Grade Level": 3, "groupNum": 1 }, { "alias": "Ron", "Hogwarts House": "Gryffindor", "Assessment Grade": 68, "Assessment Grade Level": 1, "groupNum": 1 }, { "alias": "Seamus", "Hogwarts House": "Gryffindor", "Assessment Grade": 74, "Assessment Grade Level": 1, "groupNum": 8 }, { "alias": "Theodore", "Hogwarts House": "Slytherin", "Assessment Grade": 86, "Assessment Grade Level": 3, "groupNum": 7 }, { "alias": "Zacharias", "Hogwarts House": "Hufflepuff", "Assessment Grade": 95, "Assessment Grade Level": 3, "groupNum": 8 }],
+    data: {
+      groupSize: 3,
+      groupingType: 'mixed',
+      categoriesLength: 2,
+      categoryTypes: ['qualitative', 'quantitative'],
+      categoryNames: ['Hogwarts House', 'Assessment Grade'],
+      categoryVals: [`Slytherin\nRavenclaw\nGryffindor\nGryffindor\nSlytherin\nGryffindor\nSlytherin\nHufflepuff\nGryffindor\nSlytherin\nHufflepuff\nGryffindor\nGryffindor\nHufflepuff\nGryffindor\nGryffindor\nRavenclaw\nRavenclaw\nGryffindor\nSlytherin\nRavenclaw\nGryffindor\nGryffindor\nGryffindor\nSlytherin\nHufflepuff\n`, `81\n89\n79\n81\n52\n75\n82\n83\n81\n55\n65\n78\n100\n77\n75\n84\n92\n68\n65\n84\n88\n90\n68\n74\n86\n95\n`],
+      aliases: `Zabini\nCho\nColin\nCormac\nCrabbe\nDean\nDraco\nErnie\nGinny\nGoyle\nHannah\nHarry\nHermione\nJustin\nKatie\nLavender\nLuna\nMichael\nNeville\nPansy\nPadma\nParvati\nRon\nSeamus\nTheodore\nZacharias\n`,
+    },
+    class_id: 1
+  }
+}
+
 function makeMaliciousClassName() {
   const maliciousClass = {
     id: 911,
@@ -193,55 +210,13 @@ function makeFixtures() {
   return { testTeachers, testClasses, testGroupings };
 }
 
-
-function seedTeachers(db, teachers) {
-  return db.into('teachers').insert(teachers)
-    // .then(() => 
-    //   db.raw(
-    //     `SELECT setval('teachers_id_seq', ?)`,
-    //     [teachers[teachers.length - 1].id],
-    //   )
-    // )
-}
-
-function seedClasses(db, classes) {
-  return db.into('classes').insert(classes);
-}
-
-// function cleanTables(db) {
-//   return db.transaction(trx =>
-//     trx.raw(
-//       `TRUNCATE
-//         teachers,
-//         classes,
-//         groupings,
-//         generator_data
-//       `
-//     )
-//     .then(() =>
-//       Promise.all([
-//         trx.raw(`ALTER SEQUENCE teachers_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`ALTER SEQUENCE classes_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`ALTER SEQUENCE groupings_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`ALTER SEQUENCE generator_data_id_seq minvalue 0 START WITH 1`),
-//         trx.raw(`SELECT setval('teachers_id_seq', 0)`),
-//         trx.raw(`SELECT setval('classes_id_seq', 0)`),
-//         trx.raw(`SELECT setval('groupings_id_seq', 0)`),
-//         trx.raw(`SELECT setval('generator_data_id_seq', 0)`),
-//       ])
-//     )
-//   );
-// }
-
 module.exports = {
   makeTeachersArray,
   makeClassesArray,
   makeGroupingsArray,
   makeAllExpectedGroupings,
   makeGroupingToAdd,
+  makeGroupingToPatch,
   makeMaliciousClassName,
-  makeFixtures,
-  seedTeachers,
-  seedClasses,
-  // cleanTables
+  makeFixtures
 };

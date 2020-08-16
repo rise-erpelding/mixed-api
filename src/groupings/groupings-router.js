@@ -16,8 +16,8 @@ groupingsRouter
   })
   .post(jsonParser, (req, res, next) => {
     const { grouping_name, groupings, data, teacher_id, class_id } = req.body;
-    // const newGrouping = { grouping_name, groupings, data, teacher_id, class_id };
     const newGrouping = { grouping_name, data, teacher_id, class_id };
+    // stringify groupings because it is an array
     newGrouping.groupings = JSON.stringify(groupings);
     for (const [key, value] of Object.entries(newGrouping))
       if (value === null) {
@@ -114,17 +114,18 @@ groupingsRouter
       .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
-      const { grouping_name, groupings, class_id } = req.body;
-      const groupingToUpdate = { grouping_name, groupings,  class_id };
+      const { grouping_name, groupings, data, class_id } = req.body;
+      const groupingToUpdate = { grouping_name, data, class_id };
+      groupingToUpdate.groupings = JSON.stringify(groupings);
       const numberUpdateValuesGiven = Object.values(groupingToUpdate).filter(Boolean).length
       if (numberUpdateValuesGiven === 0) {
         return res
           .status(400)
           .json({
-            error: { message: `Request body must contain 'grouping_name', 'groupings', or 'class_id'` }
+            error: { message: `Request body must contain 'grouping_name', 'data', 'groupings', or 'class_id'` }
           })
       }
-      GroupingsService.updateGroupingName(
+      GroupingsService.updateGrouping(
         req.app.get('db'),
         req.params.id,
         groupingToUpdate

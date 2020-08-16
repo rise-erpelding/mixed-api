@@ -37,12 +37,11 @@ describe(`GET /api/teachers`, () => {
   }); // end context
 
   context(`Given there are teachers in the database`, () => {
-    beforeEach('insert teachers', () => 
-      helpers.seedTeachers(
-        db,
-        testTeachers
-      )
-    );
+    beforeEach('insert teachers', () => {
+      return db
+      .into('teachers')
+      .insert(testTeachers)
+    });
 
     it(`responds with 200 and all of the teachers`, () => {
       const expectedTeachers = [
