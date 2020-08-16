@@ -4,6 +4,7 @@ const ClassesService = require('./classes-service');
 const path = require('path');
 const classesRouter = express.Router();
 const jsonParser = express.json();
+const { requireAuth } = require('../middleware/jwt-auth');
 
 const serializeClassName = classInfo => ({
   id: classInfo.id,
@@ -14,6 +15,7 @@ const serializeClassName = classInfo => ({
 
 classesRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
     ClassesService.getAllClasses(req.app.get('db'))
       .then(classes => {
@@ -45,7 +47,7 @@ classesRouter
 
 classesRouter
   .route('/teacher/:teacher_id')
-  .all((req, res, next) => {
+  .all(requireAuth, (req, res, next) => {
     ClassesService.getTeacherById(
       req.app.get('db'),
       req.params.teacher_id
@@ -81,7 +83,7 @@ classesRouter
 
   classesRouter
     .route('/:id')
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
       ClassesService.getClassByClassId(
         req.app.get('db'),
         req.params.id
