@@ -203,6 +203,47 @@ function makeMaliciousClassName() {
   };
 }
 
+function makeMaliciousGrouping() {
+  const maliciousGrouping = {
+    id: 911,
+    grouping_name: `I am a bad grouping <script>alert("xss");</script>`,
+    groupings: [{"alias":`Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,"Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Violet","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Ethan","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3},{"alias":"Aidan","Book Study Preference":"The Giver","Personality Type":"Extrovert","groupNum":4},{"alias":"Sofia","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":4},{"alias":"Gabriel","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Astrid","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Emilia","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Jasper","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Caleb","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":5},{"alias":"Olivia","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Eli","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Ken","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3},{"alias":"Aurora","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Felix","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":6},{"alias":"Wyatt","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Isabella","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3},{"alias":"Jordan","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Ella","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":6},{"alias":"Jewel","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":4},{"alias":"Oliver","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":6},{"alias":"Charlotte","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Finn","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":6},{"alias":"Husdon","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":4},{"alias":"Liam","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":6},{"alias":"Ava","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3}],
+    data: {
+      groupSize: 4,
+      groupingType: 'similar',
+      categoriesLength: 2,
+      categoryTypes: ['qualitative', 'qualitative'],
+      categoryNames: ["Book Study Preference", "Personality Type"],
+      categoryVals: [`The Giver\nWatership Down\nTuck Everlasting\nThe Giver\nTuck Everlasting\nTuck Everlasting\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nWatership Down\nThe Giver\nTuck Everlasting\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting`, `Introvert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\n`],
+      aliases: `Sven\nViolet\nEthan\nAidan\nSofia\nGabriel\nAstrid\nEmilia\nJasper\nCaleb\nOlivia\nEli\nKen\nAurora\nFelix\nWyatt\nIsabella\nJordan\nElla\nJewel\nOliver\nCharlotte\nFinn\nHusdon\nLiam\nAva`,
+    },
+    teacher_id: 1,
+    class_id: 1
+  }
+
+  const sanitizedGrouping = {
+    id: 911,
+    grouping_name: `I am a bad grouping &lt;script&gt;alert(\"xss\");&lt;/script&gt;`,
+    groupings: [{"alias":`Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,"Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Violet","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Ethan","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3},{"alias":"Aidan","Book Study Preference":"The Giver","Personality Type":"Extrovert","groupNum":4},{"alias":"Sofia","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":4},{"alias":"Gabriel","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Astrid","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Emilia","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Jasper","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Caleb","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":5},{"alias":"Olivia","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Eli","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Ken","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3},{"alias":"Aurora","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":2},{"alias":"Felix","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":6},{"alias":"Wyatt","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":1},{"alias":"Isabella","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3},{"alias":"Jordan","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Ella","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":6},{"alias":"Jewel","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":4},{"alias":"Oliver","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":6},{"alias":"Charlotte","Book Study Preference":"Tuck Everlasting","Personality Type":"Extrovert","groupNum":5},{"alias":"Finn","Book Study Preference":"Watership Down","Personality Type":"Introvert","groupNum":6},{"alias":"Husdon","Book Study Preference":"The Giver","Personality Type":"Introvert","groupNum":4},{"alias":"Liam","Book Study Preference":"Watership Down","Personality Type":"Extrovert","groupNum":6},{"alias":"Ava","Book Study Preference":"Tuck Everlasting","Personality Type":"Introvert","groupNum":3}],
+    data: {
+      groupSize: 4,
+      groupingType: 'similar',
+      categoriesLength: 2,
+      categoryTypes: ['qualitative', 'qualitative'],
+      categoryNames: ["Book Study Preference", "Personality Type"],
+      categoryVals: [`The Giver\nWatership Down\nTuck Everlasting\nThe Giver\nTuck Everlasting\nTuck Everlasting\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nWatership Down\nThe Giver\nTuck Everlasting\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting\nWatership Down\nThe Giver\nWatership Down\nTuck Everlasting`, `Introvert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nExtrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\nIntrovert\nExtrovert\nIntrovert\n`],
+      aliases: `Sven\nViolet\nEthan\nAidan\nSofia\nGabriel\nAstrid\nEmilia\nJasper\nCaleb\nOlivia\nEli\nKen\nAurora\nFelix\nWyatt\nIsabella\nJordan\nElla\nJewel\nOliver\nCharlotte\nFinn\nHusdon\nLiam\nAva`,
+    },
+    teacher_id: 1,
+    class_id: 1
+  }
+
+  return {
+    maliciousGrouping,
+    sanitizedGrouping
+  }
+}
+
 function makeFixtures() {
   const testTeachers = makeTeachersArray();
   const testClasses = makeClassesArray();
@@ -218,5 +259,6 @@ module.exports = {
   makeGroupingToAdd,
   makeGroupingToPatch,
   makeMaliciousClassName,
+  makeMaliciousGrouping,
   makeFixtures
 };

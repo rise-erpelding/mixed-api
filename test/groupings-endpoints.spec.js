@@ -6,7 +6,6 @@ const { expect } = require('chai');
 
 describe('Groupings Endpoints', function () {
   let db;
-
   const { testTeachers, testClasses, testGroupings } = helpers.makeFixtures();
 
 
@@ -24,17 +23,9 @@ describe('Groupings Endpoints', function () {
 
   after('disconnect from db', () => db.destroy());
 
-  before('cleanup', () => db.raw(`TRUNCATE
-  teachers,
-  classes,
-  groupings
-RESTART IDENTITY CASCADE`));
+  before('cleanup', () => db.raw(`TRUNCATE teachers, classes, groupings RESTART IDENTITY CASCADE`));
 
-  afterEach('cleanup', () => db.raw(`TRUNCATE
-  teachers,
-  classes,
-  groupings
-RESTART IDENTITY CASCADE`));
+  afterEach('cleanup', () => db.raw(`TRUNCATE teachers, classes, groupings RESTART IDENTITY CASCADE`));
 
   describe(`GET /api/groupings`, () => {
     context(`Given no classes in the database`, () => {

@@ -5,12 +5,22 @@ const path = require('path');
 const groupingsRouter = express.Router();
 const jsonParser = express.json();
 
+const serializeGrouping = grouping => ({
+  id: grouping.id,
+  grouping_name: xss(grouping.grouping_name),
+  groupings: JSON.parse(xss(JSON.stringify(grouping.groupings))),
+  data: JSON.parse(xss(JSON.stringify(grouping.data))),
+  date_created: grouping.date_created,
+  teacher_id: grouping.teacher_id,
+  class_id: grouping.class_id
+});
+
 groupingsRouter
   .route('/')
   .get((req, res, next) => {
     GroupingsService.getAllGroupings(req.app.get('db'))
       .then(groupings => {
-        res.json(groupings);
+        res.json(groupings.map(serializeGrouping));
       })
       .catch(next);
   })
@@ -35,7 +45,7 @@ groupingsRouter
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${grouping.id}`))
-          .json(grouping)
+          .json(serializeGrouping(grouping))
       })
       .catch(next)
   })
@@ -74,7 +84,7 @@ groupingsRouter
             });
         }
         else {
-          res.json(groupings);
+          res.json(groupings.map(serializeGrouping));
         }
       })
       .catch(next);
@@ -100,8 +110,8 @@ groupingsRouter
       })
       .catch(next)
     })
-    .get((req, res) => {
-      res.json(res.grouping);
+    .get((req, res, next) => {
+      res.json(serializeGrouping(res.grouping));
     })
     .delete((req, res, next) => {
       GroupingsService.removeGrouping(

@@ -99,8 +99,8 @@ classesRouter
       })
       .catch(next)
     })
-    .get((req, res) => {
-      res.json(res.classRes);
+    .get((req, res, next) => {
+      res.json(res.classRes.map(serializeClassName));
     })
     .delete((req, res, next) => {
       ClassesService.deleteClass(
