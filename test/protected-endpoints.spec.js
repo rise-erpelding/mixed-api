@@ -122,17 +122,17 @@ describe('Protected endpoints', function() {
       });
 
       it(`responds 401 'Unauthorized request' when invalid JWT secret`, () => {
-        const validUser = testUsers[0];
+        const validTeacher = testTeachers[0];
         const invalidSecret = 'bad-secret';
         return endpoint.method(endpoint.path)
-          .set('Authorization', helpers.makeAuthHeader(validUser, invalidSecret))
+          .set('Authorization', helpers.makeAuthHeader(validTeacher, invalidSecret))
           .expect(401, { error: `Unauthorized request` });
       });
 
       it(`responds 401 'Unauthorized request' when invalid sub in payload`, () => {
-        const invalidUser = { user_name: 'user-not-existy', id: 1 };
+        const invalidTeacher = { teacher_name: 'user-not-existy', id: 1 };
         return endpoint.method(endpoint.path)
-          .set('Authorization', helpers.makeAuthHeader(invalidUser))
+          .set('Authorization', helpers.makeAuthHeader(invalidTeacher))
           .expect(401, { error: `Unauthorized request` });
       });
     });

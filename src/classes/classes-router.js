@@ -47,11 +47,12 @@ classesRouter
   });
 
 classesRouter
-  .route('/teacher/:teacher_id')
+  .route('/teacher')
   .all(requireAuth, (req, res, next) => {
+    console.log(req.user.id)
     ClassesService.getTeacherById(
       req.app.get('db'),
-      req.params.teacher_id
+      req.user.id
     )
       .then(teacher => {
         if (!teacher) {
@@ -67,7 +68,7 @@ classesRouter
   .get((req, res, next) => {
     ClassesService.getClassByTeacherId(
       req.app.get('db'),
-      req.params.teacher_id
+      req.user.id
     )
     .then(classes => {
       if (!classes.length) {

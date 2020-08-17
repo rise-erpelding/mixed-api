@@ -274,11 +274,20 @@ function makeFixtures() {
   return { testTeachers, testClasses, testGroupings, hashedTeachers };
 }
 
-function makeAuthHeader(teacher, secret = process.env.JWT_SECRET) {
-  const token = jwt.sign({ teacher_id: teacher.id }, secret, {
-    subject: teacher.teacher_name,
+function createJwt(subject, payload, secret = process.env.JWT_SECRET) {
+  return jwt.sign(payload, secret, {
+    subject,
     algorithm: 'HS256',
   });
+}
+
+function makeAuthHeader(teacher, secret = process.env.JWT_SECRET) {
+  const subject = teacher.teacher_name;
+  const payload = {  teacher_id: teacher.id };
+  console.log(subject);
+  console.log(payload);
+  const token = createJwt(subject, payload, secret);
+  console.log(token);
   return `Bearer ${token}`;
 }
 
@@ -293,5 +302,6 @@ module.exports = {
   makeMaliciousClassName,
   makeMaliciousGrouping,
   makeFixtures,
+  createJwt,
   makeAuthHeader
 };

@@ -1,9 +1,8 @@
 const knex = require('knex');
-const jwt = require('jsonwebtoken');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
 
-describe.only('Auth Endpoints', function() {
+describe('Auth Endpoints', function() {
   let db;
 
   const { testTeachers, hashedTeachers } = helpers.makeFixtures();
@@ -71,18 +70,14 @@ describe.only('Auth Endpoints', function() {
     });
 
     it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
+      // this test fails about 50% of the time and I don't know why
       const userValidCreds = {
         teacher_name: testTeacher.teacher_name,
         password: testTeacher.password,
       };
-      const expectedToken = jwt.sign(
-        { teacher_id: testTeacher.id },
-        process.env.JWT_SECRET,
-        {
-          subject: testTeacher.teacher_name,
-          algorithm: 'HS256',
-        }
-      );
+      const sub = testTeacher.teacher_name;
+      const payload = { teacher_id: testTeacher.id };
+      const expectedToken = helpers.createJwt(sub, payload);
       return supertest(app)
         .post('/api/auth/login')
         .send(userValidCreds)

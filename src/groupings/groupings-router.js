@@ -53,11 +53,11 @@ groupingsRouter
   })
 
   groupingsRouter
-    .route('/teacher/:teacher_id')
+    .route('/teacher')
     .all(requireAuth, (req, res, next) => {
       GroupingsService.getTeacherById(
         req.app.get('db'),
-        req.params.teacher_id
+        req.user.id
       )
       .then(teacher => {
         if (!teacher) {
@@ -75,7 +75,7 @@ groupingsRouter
     .get((req, res, next) => {
       GroupingsService.getGroupingByTeacherId(
         req.app.get('db'),
-        req.params.teacher_id
+        req.user.id
       )
       .then(groupings => {
         if (!groupings.length) {
