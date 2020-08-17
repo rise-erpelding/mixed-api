@@ -54,25 +54,7 @@ groupingsRouter
 
   groupingsRouter
     .route('/teacher')
-    .all(requireAuth, (req, res, next) => {
-      GroupingsService.getTeacherById(
-        req.app.get('db'),
-        req.user.id
-      )
-      .then(teacher => {
-        if (!teacher) {
-          return res
-            .status(404)
-            .json({
-              error: { message: 'Teacher does not exist' }
-            })
-        }
-        res.teacher = teacher;
-        next();
-      })
-      .catch(next);
-    })
-    .get((req, res, next) => {
+    .get(requireAuth, (req, res, next) => {
       GroupingsService.getGroupingByTeacherId(
         req.app.get('db'),
         req.user.id

@@ -56,6 +56,7 @@ describe('Groupings Endpoints', function () {
         const expectedGroupings = helpers.makeAllExpectedGroupings();
         return supertest(app)
           .get(`/api/groupings`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, expectedGroupings);
       });
     })
@@ -79,6 +80,7 @@ describe('Groupings Endpoints', function () {
         const { newGrouping, expectedGrouping } = helpers.makeGroupingToAdd();
         return supertest(app)
           .post(`/api/groupings`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .send(newGrouping)
           .expect(201)
           .expect(res => {
@@ -92,7 +94,7 @@ describe('Groupings Endpoints', function () {
     });
   });
 
-  describe(`GET /api/groupings/teacher/:teacher_id`, () => {
+  describe(`GET /api/groupings/teacher`, () => {
     context(`Given there are teachers and classes but no groupings in the database`, () => {
       beforeEach('insert classes, teachers', () => {
         return db
@@ -106,7 +108,8 @@ describe('Groupings Endpoints', function () {
       });
       it(`responds with 404 if there are no groupings for that teacher`, () => {
         return supertest(app)
-          .get(`/api/groupings/teacher/1`)
+          .get(`/api/groupings/teacher`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(404, {
             error: { message: 'No groupings found for specified teacher' }
           })
@@ -131,17 +134,11 @@ describe('Groupings Endpoints', function () {
       it(`responds with 200 and all groupings corresponding to that teacher id`, () => {
         const expectedGroupings = helpers.makeAllExpectedGroupings();
         return supertest(app)
-          .get(`/api/groupings/teacher/1`)
+          .get(`/api/groupings/teacher`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, [expectedGroupings[0]])
       });
 
-      it(`responds with 404 if the teacher id does not exist`, () => {
-        return supertest(app)
-          .get(`/api/groupings/teacher/999`)
-          .expect(404, {
-            error: { message: 'Teacher does not exist' }
-          })
-      });
     });
   });
 
@@ -167,6 +164,7 @@ describe('Groupings Endpoints', function () {
         const expectedGroupings = helpers.makeAllExpectedGroupings();
         return supertest(app)
           .get(`/api/groupings/1`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, expectedGroupings[0])
       });
     });
@@ -178,6 +176,7 @@ describe('Groupings Endpoints', function () {
         const nonexistentGroupingId = 999;
         return supertest(app)
           .delete(`/api/groupings/${nonexistentGroupingId}`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(404)
       });
     });
@@ -202,10 +201,12 @@ describe('Groupings Endpoints', function () {
       it(`responds with 204 and removes the grouping`, () => {
         return supertest(app)
           .delete(`/api/groupings/1`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(204)
           .then(res =>
             supertest(app)
               .get(`/api/groupings/1`)
+              .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
               .expect(404, { error: { message: `Grouping does not exist` } })
           )
       });
@@ -233,11 +234,13 @@ describe('Groupings Endpoints', function () {
         const groupingToPatch = helpers.makeGroupingToPatch();
         return supertest(app)
           .patch(`/api/groupings/1`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .send(groupingToPatch)
           .expect(204)
           .then(res =>
             supertest(app)
               .get(`/api/groupings/1`)
+              .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
               .expect(res => {
                 expect(res.body.grouping_name).to.eql(groupingToPatch.grouping_name)
                 expect(res.body.groupings).to.eql(groupingToPatch.groupings)

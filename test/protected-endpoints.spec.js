@@ -63,8 +63,8 @@ describe('Protected endpoints', function() {
       method: supertest(app).post,
     },
     {
-      name: 'GET /api/classes/teacher/:teacher_id',
-      path: '/api/teacher/1',
+      name: 'GET /api/classes/teacher',
+      path: '/api/classes/teacher',
       method: supertest(app).get,
     },
     {
@@ -93,8 +93,8 @@ describe('Protected endpoints', function() {
       method: supertest(app).post,
     },
     {
-      name: 'GET /api/groupings/teacher/:teacher_id',
-      path: '/api/teacher/1',
+      name: 'GET /api/groupings/teacher',
+      path: '/api/groupings/teacher',
       method: supertest(app).get,
     },
     {

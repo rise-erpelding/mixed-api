@@ -3,11 +3,10 @@ const app = require('../src/app');
 const helpers = require('./test-helpers');
 const supertest = require('supertest');
 
-describe.only('Teachers Endpoints', function() {
+describe('Teachers Endpoints', function() {
   let db;
 
   const { testTeachers } = helpers.makeFixtures();
-  console.log(helpers.makeAuthHeader(testTeachers[0]));
 
 
 before('make knex instance', () => {
@@ -62,6 +61,7 @@ describe(`GET /api/teachers`, () => {
       ];
       return supertest(app)
         .get(`/api/teachers`)
+        .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
         .expect(200, expectedTeachers);
     })
   })

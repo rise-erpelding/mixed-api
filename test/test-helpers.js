@@ -284,10 +284,7 @@ function createJwt(subject, payload, secret = process.env.JWT_SECRET) {
 function makeAuthHeader(teacher, secret = process.env.JWT_SECRET) {
   const subject = teacher.teacher_name;
   const payload = {  teacher_id: teacher.id };
-  console.log(subject);
-  console.log(payload);
   const token = createJwt(subject, payload, secret);
-  console.log(token);
   return `Bearer ${token}`;
 }
 
