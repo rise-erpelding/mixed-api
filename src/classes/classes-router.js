@@ -24,7 +24,8 @@ classesRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { class_name, teacher_id } = req.body;
+    const { class_name } = req.body;
+    const teacher_id = req.user.id;
     const newClass = { class_name, teacher_id };
 
     if (!class_name) {

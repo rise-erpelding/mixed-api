@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 function makeTeachersArray() {
   return [
     {
@@ -12,6 +15,25 @@ function makeTeachersArray() {
       teacher_name: "kdavis",
       email: "kdavis@educate.me",
       password: 'password',
+      date_created: "2020-08-10T20:17:37.935Z",
+    }
+  ];
+}
+
+function makeHashedTeachersArray() {
+  return [
+    {
+      id: 1,
+      teacher_name: "msmith",
+      email: "msmith@educate.me",
+      password: '$2a$12$2G8esEvUZdLKJ4iIN.74E.wXofmdqxlWfVkjnfG.1GNFR5WEBQJdS',
+      date_created: "2020-08-10T20:17:37.935Z"
+    },
+    {
+      id: 2,
+      teacher_name: "kdavis",
+      email: "kdavis@educate.me",
+      password: '$2a$12$2G8esEvUZdLKJ4iIN.74E.wXofmdqxlWfVkjnfG.1GNFR5WEBQJdS',
       date_created: "2020-08-10T20:17:37.935Z",
     }
   ];
@@ -248,11 +270,21 @@ function makeFixtures() {
   const testTeachers = makeTeachersArray();
   const testClasses = makeClassesArray();
   const testGroupings = makeGroupingsArray();
-  return { testTeachers, testClasses, testGroupings };
+  const hashedTeachers = makeHashedTeachersArray();
+  return { testTeachers, testClasses, testGroupings, hashedTeachers };
+}
+
+function makeAuthHeader(teacher, secret = process.env.JWT_SECRET) {
+  const token = jwt.sign({ teacher_id: teacher.id }, secret, {
+    subject: teacher.teacher_name,
+    algorithm: 'HS256',
+  });
+  return `Bearer ${token}`;
 }
 
 module.exports = {
   makeTeachersArray,
+  makeHashedTeachersArray,
   makeClassesArray,
   makeGroupingsArray,
   makeAllExpectedGroupings,
@@ -260,5 +292,6 @@ module.exports = {
   makeGroupingToPatch,
   makeMaliciousClassName,
   makeMaliciousGrouping,
-  makeFixtures
+  makeFixtures,
+  makeAuthHeader
 };

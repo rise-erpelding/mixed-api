@@ -6,8 +6,8 @@ const supertest = require('supertest');
 describe('Teachers Endpoints', function() {
   let db;
 
-  const { testTeachers, testClasses } = helpers.makeFixtures();
-
+  const { testTeachers } = helpers.makeFixtures();
+  // console.log(helpers.makeAuthHeader(testTeachers[0]))
 
 before('make knex instance', () => {
   db = knex({
@@ -32,9 +32,10 @@ describe(`GET /api/teachers`, () => {
     it(`responds with 200 and an empty list`, () => {
       return supertest(app)
         .get(`/api/teachers`)
+        .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
         .expect(200, []);
-    }); // end it
-  }); // end context
+    });
+  });
 
   context(`Given there are teachers in the database`, () => {
     beforeEach('insert teachers', () => {
@@ -61,45 +62,6 @@ describe(`GET /api/teachers`, () => {
         .expect(200, expectedTeachers);
     })
   })
-}); // end describe GET /api/teachers
-
-// describe(`GET /api/teachers/:id`, () => {
-//   context(`Given there are teachers in the database`, () => {
-//     beforeEach('insert teachers', () =>
-//     helpers.seedTeachers(
-//       db,
-//       testTeachers
-//     )
-//   )
-
-//   it(`responds with 200 and the teacher information corresponding to the teacher id`, () => {
-//     const expectedTeacher = [
-//       {
-//         id: 1,
-//         teacher_name: "msmith",
-//         email: "msmith@educate.me"
-//       }
-//     ]
-//     return supertest(app)
-//       .get(`/api/teachers/1`)
-//       .expect(200, expectedTeacher)
-//   })
-
-//   });
-
-
-// }); // end GET /api/teachers/:id
-
-  // describe(`PATCH /api/teachers/:id`, () => {
-  //   context(`Given there are teachers in the database`, () => {
-
-  //   })
-  // })
-
-  // describe(`DELETE /api/teachers/:id`, () => {
-  //   context(`Given there are teachers in the database`, () => {
-
-  //   })
-  // })
+});
 
 });

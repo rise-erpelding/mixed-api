@@ -8,7 +8,6 @@ authRouter
 .post('/login', jsonParser, (req, res, next) => {
   const { teacher_name, password } = req.body;
   const loginTeacher = { teacher_name, password };
-  console.log(loginTeacher);
   for (const [key, value] of Object.entries(loginTeacher))
     if (value == null)
       return res.status(400).json({
@@ -30,9 +29,9 @@ authRouter
             return res.status(400).json({
               error: 'Incorrect teacher_name or password'
             });
-
+              
             const sub = dbTeacher.teacher_name;
-            const payload = { user_id: dbTeacher.id };
+            const payload = { teacher_id: dbTeacher.id };
             res.send({
               authToken: AuthService.createJwt(sub, payload),
             });
