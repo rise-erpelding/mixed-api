@@ -36,8 +36,12 @@ RESTART IDENTITY CASCADE`));
 
   describe(`GET /api/classes`, () => {
     context(`Given no classes in the database`, () => {
+      beforeEach('insert some teachers', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+      });
       it(`responds with 200 and an empty list`, () => {
-        // THIS TEST FAILS CONSISTENTLY
         return supertest(app)
           .get(`/api/classes`)
           .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
@@ -215,8 +219,12 @@ RESTART IDENTITY CASCADE`));
   });
 
   describe(`DELETE /api/classes/:id`, () => {
-    // THIS TEST IS FAILING CONSISTENTLY
     context(`Given there are no classes in the database`, () => {
+      beforeEach('insert some teachers', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+      });
       it(`responds with 404`, () => {
         const nonexistentClassId = 999;
         return supertest(app)

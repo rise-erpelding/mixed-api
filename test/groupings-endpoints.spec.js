@@ -28,10 +28,21 @@ describe('Groupings Endpoints', function () {
   afterEach('cleanup', () => db.raw(`TRUNCATE teachers, classes, groupings RESTART IDENTITY CASCADE`));
 
   describe(`GET /api/groupings`, () => {
-    context(`Given no classes in the database`, () => {
+    context(`Given no groupings in the database`, () => {
+      beforeEach('insert classes, teachers', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+          .then(() => {
+            return db
+              .into('classes')
+              .insert(testClasses)
+          });
+      });
       it(`responds with 200 and an empty list`, () => {
         return supertest(app)
-          .get(`/api/classes`)
+          .get(`/api/groupings`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, []);
       });
     });
@@ -171,7 +182,18 @@ describe('Groupings Endpoints', function () {
   });
 
   describe(`DELETE /api/groupings/:id`, () => {
+    
     context(`Given there are no groupings in the database`, () => {
+      beforeEach('insert classes, teachers', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+          .then(() => {
+            return db
+              .into('classes')
+              .insert(testClasses)
+          });
+      });
       it(`responds with 404`, () => {
         const nonexistentGroupingId = 999;
         return supertest(app)
