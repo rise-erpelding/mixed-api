@@ -4,6 +4,7 @@ const ClassesService = require('./classes-service');
 const path = require('path');
 const classesRouter = express.Router();
 const jsonParser = express.json();
+const { requireAuth } = require('../middleware/jwt-auth');
 
 const serializeClassName = classInfo => ({
   id: classInfo.id,
@@ -14,6 +15,7 @@ const serializeClassName = classInfo => ({
 
 classesRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
     ClassesService.getAllClasses(req.app.get('db'))
       .then(classes => {
@@ -22,7 +24,8 @@ classesRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { class_name, teacher_id } = req.body;
+    const { class_name } = req.body;
+    const teacher_id = req.user.id;
     const newClass = { class_name, teacher_id };
 
     if (!class_name) {
@@ -44,27 +47,11 @@ classesRouter
   });
 
 classesRouter
-  .route('/teacher/:teacher_id')
-  .all((req, res, next) => {
-    ClassesService.getTeacherById(
-      req.app.get('db'),
-      req.params.teacher_id
-    )
-      .then(teacher => {
-        if (!teacher) {
-          return res.status(404).json({
-            error: { message: 'Teacher does not exist' }
-          })
-        }
-        res.teacher = teacher;
-        next();
-      })
-      .catch(next);
-  })
-  .get((req, res, next) => {
+  .route('/teacher')
+  .get(requireAuth, (req, res, next) => {
     ClassesService.getClassByTeacherId(
       req.app.get('db'),
-      req.params.teacher_id
+      req.user.id
     )
     .then(classes => {
       if (!classes.length) {
@@ -81,7 +68,7 @@ classesRouter
 
   classesRouter
     .route('/:id')
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
       ClassesService.getClassByClassId(
         req.app.get('db'),
         req.params.id

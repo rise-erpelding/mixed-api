@@ -8,8 +8,8 @@ RESTART IDENTITY CASCADE;
 
 INSERT INTO teachers (teacher_name, email, password)
   VALUES
-  ('msmith', 'msmith@educate.me', 'password'),
-  ('kdavis', 'kdavis@educate.me', 'password123');
+  ('msmith', 'msmith@educate.me', '$2a$12$2G8esEvUZdLKJ4iIN.74E.wXofmdqxlWfVkjnfG.1GNFR5WEBQJdS'),
+  ('kdavis', 'kdavis@educate.me', '$2a$12$2G8esEvUZdLKJ4iIN.74E.wXofmdqxlWfVkjnfG.1GNFR5WEBQJdS');
 
 INSERT INTO classes (class_name, teacher_id)
   VALUES

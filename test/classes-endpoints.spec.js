@@ -36,9 +36,15 @@ RESTART IDENTITY CASCADE`));
 
   describe(`GET /api/classes`, () => {
     context(`Given no classes in the database`, () => {
+      beforeEach('insert some teachers', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+      });
       it(`responds with 200 and an empty list`, () => {
         return supertest(app)
           .get(`/api/classes`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, []);
       });
     });
@@ -59,6 +65,7 @@ RESTART IDENTITY CASCADE`));
       it(`removes XSS attack content`, () => {
         return supertest(app)
           .get(`/api/classes`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, [sanitizedClass])
       })
     })
@@ -99,6 +106,7 @@ RESTART IDENTITY CASCADE`));
         ];
         return supertest(app)
           .get(`/api/classes`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, expectedClasses);
       })
     })
@@ -120,6 +128,7 @@ RESTART IDENTITY CASCADE`));
         }
         return supertest(app)
           .post(`/api/classes`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .send(newClass)
           .expect(201)
           .expect(res => {
@@ -131,7 +140,7 @@ RESTART IDENTITY CASCADE`));
     });
   });
 
-  describe(`GET /api/classes/teacher/:teacher_id`, () => {
+  describe(`GET /api/classes/teacher`, () => {
     context(`Given there are teachers but no classes in the database`, () => {
       beforeEach('insert classes and teachers', () => {
         return db
@@ -140,7 +149,8 @@ RESTART IDENTITY CASCADE`));
       });
       it(`responds with 404 if there are no classes for that teacher`, () => {
         return supertest(app)
-          .get(`/api/classes/teacher/1`)
+          .get(`/api/classes/teacher`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(404, {
             error: { message: 'No classes found for specified teacher' }
           })
@@ -173,16 +183,9 @@ RESTART IDENTITY CASCADE`));
           }
         ];
         return supertest(app)
-          .get(`/api/classes/teacher/1`)
+          .get(`/api/classes/teacher`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, expectedClasses)
-      });
-
-      it(`responds with 404 if the teacher id does not exist`, () => {
-        return supertest(app)
-          .get(`/api/classes/teacher/999`)
-          .expect(404, {
-            error: { message: 'Teacher does not exist' }
-          })
       });
     });
   });
@@ -209,6 +212,7 @@ RESTART IDENTITY CASCADE`));
         };
         return supertest(app)
           .get(`/api/classes/1`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(200, [expectedClass])
       });
     });
@@ -216,10 +220,16 @@ RESTART IDENTITY CASCADE`));
 
   describe(`DELETE /api/classes/:id`, () => {
     context(`Given there are no classes in the database`, () => {
+      beforeEach('insert some teachers', () => {
+        return db
+          .into('teachers')
+          .insert(testTeachers)
+      });
       it(`responds with 404`, () => {
         const nonexistentClassId = 999;
         return supertest(app)
           .delete(`/api/classes/${nonexistentClassId}`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(404)
       });
     });
@@ -238,10 +248,12 @@ RESTART IDENTITY CASCADE`));
       it(`responds with 204 and removes the class`, () => {
         return supertest(app)
           .delete(`/api/classes/3`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .expect(204)
           .then(res =>
             supertest(app)
               .get(`/api/classes/3`)
+              .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
               .expect(404, { error: { message: `Class does not exist` } })
           )
       });
@@ -266,11 +278,13 @@ RESTART IDENTITY CASCADE`));
         }
         return supertest(app)
           .patch(`/api/classes/3`)
+          .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
           .send(newClassName)
           .expect(204)
           .then(res =>
             supertest(app)
               .get(`/api/classes/3`)
+              .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
               .expect(res => {
                 // show that the class name has changed
                 expect(res.body[0].class_name).to.eql(newClassName.class_name)

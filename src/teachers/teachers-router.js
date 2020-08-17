@@ -3,10 +3,11 @@ const TeachersService = require('./teachers-service');
 // const path = require('path');
 const teachersRouter = express.Router();
 // const jsonParser = express.json();
+const { requireAuth } = require('../middleware/jwt-auth');
 
 teachersRouter
   .route('/')
-  .get((req, res, next) => {
+  .get(requireAuth, (req, res, next) => {
     TeachersService.getAllTeachers(req.app.get('db'))
       .then(teachers => {
         res.json(teachers);

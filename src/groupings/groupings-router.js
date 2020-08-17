@@ -4,6 +4,7 @@ const GroupingsService = require('./groupings-service');
 const path = require('path');
 const groupingsRouter = express.Router();
 const jsonParser = express.json();
+const { requireAuth } = require('../middleware/jwt-auth');
 
 const serializeGrouping = grouping => ({
   id: grouping.id,
@@ -17,6 +18,7 @@ const serializeGrouping = grouping => ({
 
 groupingsRouter
   .route('/')
+  .all(requireAuth)
   .get((req, res, next) => {
     GroupingsService.getAllGroupings(req.app.get('db'))
       .then(groupings => {
@@ -51,29 +53,11 @@ groupingsRouter
   })
 
   groupingsRouter
-    .route('/teacher/:teacher_id')
-    .all((req, res, next) => {
-      GroupingsService.getTeacherById(
-        req.app.get('db'),
-        req.params.teacher_id
-      )
-      .then(teacher => {
-        if (!teacher) {
-          return res
-            .status(404)
-            .json({
-              error: { message: 'Teacher does not exist' }
-            })
-        }
-        res.teacher = teacher;
-        next();
-      })
-      .catch(next);
-    })
-    .get((req, res, next) => {
+    .route('/teacher')
+    .get(requireAuth, (req, res, next) => {
       GroupingsService.getGroupingByTeacherId(
         req.app.get('db'),
-        req.params.teacher_id
+        req.user.id
       )
       .then(groupings => {
         if (!groupings.length) {
@@ -92,7 +76,7 @@ groupingsRouter
 
     groupingsRouter
     .route('/:id')
-    .all((req, res, next) => {
+    .all(requireAuth, (req, res, next) => {
       GroupingsService.getGroupingById(
         req.app.get('db'),
         req.params.id
