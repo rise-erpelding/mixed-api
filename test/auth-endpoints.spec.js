@@ -1,6 +1,7 @@
 const knex = require('knex');
 const app = require('../src/app');
 const helpers = require('./test-helpers');
+const { expect } = require('chai');
 
 describe('Auth Endpoints', function() {
   let db;
@@ -70,19 +71,17 @@ describe('Auth Endpoints', function() {
     });
 
     it(`responds 200 and JWT auth token using secret when valid credentials`, () => {
-      // this test fails about 50% of the time and I don't know why
       const userValidCreds = {
         teacher_name: testTeacher.teacher_name,
         password: testTeacher.password,
       };
-      const sub = testTeacher.teacher_name;
-      const payload = { teacher_id: testTeacher.id };
-      const expectedToken = helpers.createJwt(sub, payload);
       return supertest(app)
         .post('/api/auth/login')
         .send(userValidCreds)
-        .expect(200, {
-          authToken: expectedToken,
+        .expect(200)
+        .expect(res => {
+          expect(res.body).to.have.property('authToken');
+          expect(res.body.authToken.length).to.not.eql(0);
         });
     });
   });

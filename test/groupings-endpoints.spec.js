@@ -98,7 +98,7 @@ describe('Groupings Endpoints', function () {
             expect(res.body.class_id).to.eql(expectedGrouping.class_id);
             expect(res.body.teacher_id).to.eql(expectedGrouping.teacher_id);
             expect(res.body.grouping_name).to.eql(expectedGrouping.grouping_name);
-            expect(res.body.groupings).to.eql(expectedGrouping.groupings)
+            expect(res.body.groupings).to.eql(expectedGrouping.groupings);
             expect(res.body).to.have.property('id');
           });
       });
