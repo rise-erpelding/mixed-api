@@ -27,7 +27,8 @@ groupingsRouter
       .catch(next);
   })
   .post(jsonParser, (req, res, next) => {
-    const { grouping_name, groupings, data, teacher_id, class_id } = req.body;
+    const { grouping_name, groupings, data, class_id } = req.body;
+    const teacher_id = req.user.id;
     const newGrouping = { grouping_name, data, teacher_id, class_id };
     // stringify groupings because it is an array
     newGrouping.groupings = JSON.stringify(groupings);
