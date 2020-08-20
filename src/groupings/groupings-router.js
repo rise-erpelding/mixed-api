@@ -61,16 +61,7 @@ groupingsRouter
         req.user.id
       )
       .then(groupings => {
-        if (!groupings.length) {
-          return res
-            .status(404)
-            .json({
-              error: { message: 'No groupings found for specified teacher' }
-            });
-        }
-        else {
-          res.json(groupings.map(serializeGrouping));
-        }
+        res.json(groupings.map(serializeGrouping));
       })
       .catch(next);
     })

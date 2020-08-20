@@ -117,13 +117,11 @@ describe('Groupings Endpoints', function () {
               .insert(testClasses)
           });
       });
-      it(`responds with 404 if there are no groupings for that teacher`, () => {
+      it(`responds with an empty list if there are no groupings for that teacher`, () => {
         return supertest(app)
           .get(`/api/groupings/teacher`)
           .set('Authorization', helpers.makeAuthHeader(testTeachers[0]))
-          .expect(404, {
-            error: { message: 'No groupings found for specified teacher' }
-          })
+          .expect(200, [])
       })
     })
     context(`Given there are classes, teachers and groupings in the database`, () => {
