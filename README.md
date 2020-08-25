@@ -17,11 +17,11 @@ username: msmith
 password: password
 
 ## Screenshots
-<!-- ![Landing Page](screenshots/Farmpicks-Landing-Page.png)
+![Landing Page](public/screenshots/Landing-Desktop.png)
 
-![Results Page](screenshots/Farmpicks-Search-Results.png)
+![Group Generator](public/screenshots/Generator.png)
 
-![Farm Information Page](screenshots/Farmpicks-Farm-Page.png) -->
+![Saved Groups Page](public/screenshots/My-Groups-Desktop.png)
 
 ## Built with
 - Node.js
