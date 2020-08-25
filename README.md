@@ -17,11 +17,11 @@ username: msmith
 password: password
 
 ## Screenshots
-![Landing Page](public/screenshots/Landing-Desktop.png)
+![Landing Page](screenshots/Landing-Desktop.png)
 
-![Group Generator](public/screenshots/Generator.png)
+![Group Generator](screenshots/Generator.png)
 
-![Saved Groups Page](public/screenshots/My-Groups-Desktop.png)
+![Saved Groups Page](screenshots/My-Groups-Desktop.png)
 
 ## Built with
 - Node.js
